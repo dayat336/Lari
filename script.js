@@ -231,14 +231,11 @@ function errorPosisi(err) {
   }
 }
 
-function mulai() {
-  // 1. Minta izin Median dulu sebelum memanggil GPS
-  if (MODE[state.mode].gps) mintaIzinLokasiMedian();
-
-  // 2. Jalankan GPS seperti biasa
-  if (MODE[state.mode].gps && !mulaiGPS()) return;
-  {
-    
+function mulaiGPS() {
+  if (!('geolocation' in navigator)) {
+    tampilBanner('Browser ini tidak mendukung GPS.', true);
+    return false;
+  }
   if (state.watchId === null) {
     $('gpsStatus').textContent = 'Mencari sinyal GPS...';
     $('gpsStatus').className = 'gps mid';
