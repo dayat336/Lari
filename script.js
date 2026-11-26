@@ -18,6 +18,7 @@ const PLAYLIST = [
   { judul: 'viva la vida', src: 'viva la vida.mp3'},
 ];
 
+
 /* ---------- pengaturan GPS ---------- */
 const GPS_MAKS_AKURASI = 30;  // titik dengan akurasi lebih buruk dari ini (meter) diabaikan
 const GPS_MIN_GERAK = 3;      // gerakan lebih kecil dari ini (meter) dianggap goyangan GPS
@@ -230,11 +231,14 @@ function errorPosisi(err) {
   }
 }
 
-function mulaiGPS() {
-  if (!('geolocation' in navigator)) {
-    tampilBanner('Browser ini tidak mendukung GPS.', true);
-    return false;
-  }
+function mulai() {
+  // 1. Minta izin Median dulu sebelum memanggil GPS
+  if (MODE[state.mode].gps) mintaIzinLokasiMedian();
+
+  // 2. Jalankan GPS seperti biasa
+  if (MODE[state.mode].gps && !mulaiGPS()) return;
+  {
+    
   if (state.watchId === null) {
     $('gpsStatus').textContent = 'Mencari sinyal GPS...';
     $('gpsStatus').className = 'gps mid';
