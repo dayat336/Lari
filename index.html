@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+  <title>Lari Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+  <main class="app">
+
+    <header class="top">
+      <div class="brand">
+        <svg class="maskot" viewBox="0 0 64 64" aria-hidden="true">
+          <g class="leg l1"><rect x="19" y="46" width="10" height="13" rx="5" fill="#ff5a4d" stroke="#2b2d42" stroke-width="3"></rect></g>
+          <g class="leg l2"><rect x="35" y="46" width="10" height="13" rx="5" fill="#ff5a4d" stroke="#2b2d42" stroke-width="3"></rect></g>
+          <g class="m-body">
+            <circle cx="32" cy="30" r="22" fill="#ffd23f" stroke="#2b2d42" stroke-width="3"></circle>
+            <path d="M11 22 Q32 5 53 22" fill="none" stroke="#ff5a4d" stroke-width="6" stroke-linecap="round"></path>
+            <path d="M11 22 Q32 5 53 22" fill="none" stroke="#2b2d42" stroke-width="1.5" stroke-linecap="round" opacity="0.35"></path>
+            <circle cx="24" cy="29" r="3.4" fill="#2b2d42"></circle>
+            <circle cx="40" cy="29" r="3.4" fill="#2b2d42"></circle>
+            <circle cx="25.2" cy="27.8" r="1.1" fill="#fff"></circle>
+            <circle cx="41.2" cy="27.8" r="1.1" fill="#fff"></circle>
+            <circle cx="17" cy="37" r="3.6" fill="#ff9bb8"></circle>
+            <circle cx="47" cy="37" r="3.6" fill="#ff9bb8"></circle>
+            <path d="M25 38 Q32 46 39 38" fill="none" stroke="#2b2d42" stroke-width="3" stroke-linecap="round"></path>
+          </g>
+        </svg>
+        <h1>Lari Tracker</h1>
+      </div>
+      <span id="gpsStatus" class="gps">GPS mati</span>
+    </header>
+
+    <!-- Mode olahraga -->
+    <section class="modes" id="modes" aria-label="Mode olahraga">
+      <button class="mode-btn active" data-mode="lari" type="button">Lari</button>
+      <button class="mode-btn" data-mode="jalan" type="button">Jalan</button>
+      <button class="mode-btn" data-mode="bebas" type="button">Olahraga bebas</button>
+    </section>
+
+    <!-- Lingkaran progres -->
+    <section class="ring-card">
+      <div class="ring">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <defs>
+            <linearGradient id="gradRing" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff6b9d"></stop>
+              <stop offset="1" stop-color="#ff9f43"></stop>
+            </linearGradient>
+          </defs>
+          <circle class="ring-outline" cx="110" cy="110" r="96"></circle>
+          <circle class="ring-bg" cx="110" cy="110" r="96"></circle>
+          <circle class="ring-fg" id="ringProgress" cx="110" cy="110" r="96"></circle>
+        </svg>
+        <div class="ring-text">
+          <div class="ring-value" id="ringValue">0.00</div>
+          <div class="ring-unit" id="ringUnit">km</div>
+          <div class="ring-sub" id="ringSub">tanpa target</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="banner" id="banner" hidden></div>
+
+    <!-- Statistik -->
+    <section class="stats">
+      <div class="stat"><span class="stat-label" id="label1">Waktu</span><span class="stat-value" id="stat1">00:00</span></div>
+      <div class="stat"><span class="stat-label" id="label2">Pace /km</span><span class="stat-value" id="stat2">--:--</span></div>
+      <div class="stat"><span class="stat-label" id="label3">Km/jam</span><span class="stat-value" id="stat3">0.0</span></div>
+    </section>
+
+    <!-- Target -->
+    <section class="card target">
+      <h2>Target</h2>
+      <div class="target-row" id="targetJarak">
+        <label for="jarakValue">Jarak yang ingin ditempuh</label>
+        <div class="inputs">
+          <input type="number" id="jarakValue" value="3" min="0" step="0.1" inputmode="decimal">
+          <select id="jarakUnit" aria-label="Satuan jarak">
+            <option value="km" selected>km</option>
+            <option value="m">m</option>
+          </select>
+        </div>
+      </div>
+      <div class="target-row" id="targetWaktu" hidden>
+        <label for="waktuValue">Lama olahraga</label>
+        <div class="inputs">
+          <input type="number" id="waktuValue" value="30" min="0" step="1" inputmode="numeric">
+          <span class="suffix">menit</span>
+        </div>
+      </div>
+      <p class="hint">Kosongkan atau isi 0 kalau tidak mau pakai target.</p>
+    </section>
+
+    <!-- Tombol kontrol -->
+    <section class="controls">
+      <button id="btnMain" class="btn primary" type="button">Mulai</button>
+      <button id="btnFinish" class="btn danger" type="button" disabled>Selesai</button>
+    </section>
+
+    <!-- Musik -->
+    <section class="card music" id="musicCard">
+      <h2>Musik</h2>
+      <div class="track">
+        <div class="track-info">
+          <div class="track-title" id="musicTitle">-</div>
+          <div class="track-artist" id="musicArtist"></div>
+        </div>
+        <div class="eq" aria-hidden="true"><i></i><i></i><i></i></div>
+      </div>
+      <div class="music-controls">
+        <button id="btnPrev" class="icon-btn" type="button" aria-label="Lagu sebelumnya">|&#9664;</button>
+        <button id="btnPlay" class="icon-btn big" type="button" aria-label="Putar atau jeda musik">&#9654;</button>
+        <button id="btnNext" class="icon-btn" type="button" aria-label="Lagu berikutnya">&#9654;|</button>
+      </div>
+      <div class="vol">
+        <label for="volume">Volume</label>
+        <input type="range" id="volume" min="0" max="1" step="0.05" value="0.8">
+      </div>
+      <label class="check"><input type="checkbox" id="autoMusic" checked> Putar musik otomatis saat mulai</label>
+      <p class="music-msg" id="musicMsg" hidden></p>
+    </section>
+
+    <!-- Gambar hasil -->
+    <section class="card share" id="shareCard">
+      <h2>Gambar hasil</h2>
+      <p class="hint" id="shareEmpty">Selesaikan satu olahraga, atau ketuk salah satu riwayat, untuk membuat gambar hasilnya.</p>
+
+      <div class="share-body" id="shareBody" hidden>
+        <div class="canvas-wrap"><canvas id="cardCanvas" width="1080" height="1920"></canvas></div>
+
+        <div class="share-row">
+          <label class="btn-sm" for="fotoInput">Pilih foto</label>
+          <input type="file" id="fotoInput" accept="image/*" hidden>
+          <button id="btnHapusFoto" class="btn-sm" type="button" hidden>Hapus foto</button>
+        </div>
+
+        <div class="opts">
+          <div class="opt-row">
+            <label for="optUkuran">Ukuran</label>
+            <select id="optUkuran">
+              <option value="story" selected>Story 9:16</option>
+              <option value="kotak">Kotak 1:1</option>
+            </select>
+          </div>
+          <label class="check" id="optRuteWrap"><input type="checkbox" id="optRute" checked> Tampilkan rute</label>
+          <label class="check"><input type="checkbox" id="optTransparan"> Latar transparan (tanpa foto)</label>
+        </div>
+        <p class="hint">Rute bisa menunjukkan lokasi rumahmu. Matikan sebelum dibagikan kalau perlu.</p>
+
+        <div class="share-row">
+          <button id="btnSimpan" class="btn primary" type="button">Simpan gambar</button>
+          <button id="btnBagikan" class="btn-sm" type="button" hidden>Bagikan</button>
+        </div>
+
+        <div id="hasilBox" hidden>
+          <p class="hint">Kalau gambar tidak tersimpan otomatis, tekan lama gambar di bawah lalu pilih simpan.</p>
+          <img id="hasilImg" alt="Hasil olahraga">
+        </div>
+      </div>
+    </section>
+
+    <!-- Riwayat -->
+    <section class="card history">
+      <div class="history-head">
+        <h2>Riwayat</h2>
+        <button id="btnClearHistory" class="link-btn" type="button">Hapus</button>
+      </div>
+      <ul id="historyList"></ul>
+      <p class="hint">Ketuk satu riwayat untuk membuat gambarnya.</p>
+    </section>
+
+  </main>
+
+  <script src="script.js?v=3"></script>
+</body>
+</html>
