@@ -6,9 +6,16 @@
    - Lalu tulis nama file-nya di bawah. Boleh tambah/kurangi baris.
    ===================================================== */
 const PLAYLIST = [
-  { judul: 'Lagu 1', artis: 'Nama artis', src: 'musik/lagu1.mp3' },
-  { judul: 'Lagu 2', artis: 'Nama artis', src: 'musik/lagu2.mp3' },
-  { judul: 'Lagu 3', artis: 'Nama artis', src: 'musik/lagu3.mp3' }
+  { judul: 'nina', src: 'nina.mp3' },
+  { judul: 'starboy', src: 'starboy.mp3' },
+  { judul: 'riwrite the star',  src: 'riewrate the star.mp3' },
+  { judul: 'pompei',  src: 'pompei.mp3' },
+  { judul: 'pople',  src: 'pouple.mp3' },
+  { judul: 'the one that got away',  src: 'the one that got away.mp3' },
+  { judul: 'safe aware',  src: 'safe aware.mp3' },
+  { judul: 'viva la vida',  src: 'viva la vida.mp3' },
+  { judul: 'megustas tu', src: 'megustastu.mp3' },
+  { judul: 'viva la vida', src: 'viva la vida.mp3'},
 ];
 
 /* ---------- pengaturan GPS ---------- */
